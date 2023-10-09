@@ -3,7 +3,7 @@ package com.example.demolocationapibff.service.postcodes;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-@ConfigurationProperties(prefix="postcodes-api")
+@ConfigurationProperties(prefix = "postcodes-api")
 @Configuration
 public class PostcodesConfiguration {
 

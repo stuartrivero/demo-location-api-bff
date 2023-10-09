@@ -8,7 +8,7 @@ import java.math.RoundingMode;
 public record Distance(BigDecimal km) {
 
     @JsonGetter("km")
-    public BigDecimal getKm(){
+    public BigDecimal getKm() {
         return km.setScale(2, RoundingMode.DOWN);
     }
 
