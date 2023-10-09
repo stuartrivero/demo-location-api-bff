@@ -5,7 +5,7 @@ import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.HttpExchange;
 
 @HttpExchange(url = "/postcodes", accept = "application/json", contentType = "application/json")
-public interface PostcodesIoService {
+public interface PostcodesClient {
     @GetExchange("/{postcode}")
     PostcodesDTO getPostcodeInformation(@PathVariable String postcode);
 

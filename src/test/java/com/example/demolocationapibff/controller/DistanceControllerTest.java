@@ -32,15 +32,13 @@ class DistanceControllerTest {
     @Test
     public void badRequestWhenFirstIsNotAPostcode() throws Exception {
         this.mockMvc.perform(get("/distance/calculator?postcode1=ME1203TN&postcode2=W1A 1AA"))
-                .andExpect(status().isBadRequest())
-        ;
+                .andExpect(status().isBadRequest());
     }
 
     @Test
     public void badRequestWhenSecondIsNotAPostcode() throws Exception {
         this.mockMvc.perform(get("/distance/calculator?postcode1=ME1 3TN&postcode2=W1A1AA"))
-                .andExpect(status().isBadRequest())
-        ;
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -50,7 +48,6 @@ class DistanceControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("""
                         {"km":101.00}\
-                        """))
-        ;
+                        """));
     }
 }
