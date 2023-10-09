@@ -24,3 +24,4 @@ will return
 * Write the correct validation for postcode format
 * Move the validation for postcode into a spring validator
 * Move sample data into files
+* Cache requests to provide state management example 
