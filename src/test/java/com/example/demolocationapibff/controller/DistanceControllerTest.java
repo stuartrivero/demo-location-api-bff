@@ -1,23 +1,27 @@
 package com.example.demolocationapibff.controller;
 
+import com.example.demolocationapibff.domain.Distance;
+import com.example.demolocationapibff.domain.Postcode;
 import com.example.demolocationapibff.domain.PostcodeValidator;
+import com.example.demolocationapibff.service.DistanceCalculatorService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
 @WebMvcTest(DistanceController.class)
-@Import(PostcodeValidator.class)
+@Import({PostcodeValidator.class})
 class DistanceControllerTest {
 
+    @MockBean
+    DistanceCalculatorService service;
 
     @Autowired
     private MockMvc mockMvc;
@@ -39,10 +43,11 @@ class DistanceControllerTest {
 
     @Test
     public void canAdd() throws Exception {
+        when(service.distanceBetween(new Postcode("ME1 3TN"), new Postcode("W1A 1AA"))).thenReturn(new Distance("101"));
         this.mockMvc.perform(get("/distance/calculator?postcode1=ME1 3TN&postcode2=W1A 1AA"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("""
-                        {"km":"33"}\
+                        {"km":"101"}\
                         """))
         ;
     }

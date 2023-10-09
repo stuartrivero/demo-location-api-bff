@@ -2,7 +2,9 @@ package com.example.demolocationapibff.controller;
 
 
 import com.example.demolocationapibff.domain.Distance;
+import com.example.demolocationapibff.domain.Postcode;
 import com.example.demolocationapibff.domain.PostcodeValidator;
+import com.example.demolocationapibff.service.DistanceCalculatorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,10 +16,11 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/distance")
 public class DistanceController {
 
-
+    private final DistanceCalculatorService distanceCalculatorService;
     private final PostcodeValidator postcodeValidator;
 
-    public DistanceController(PostcodeValidator postcodeValidator) {
+    public DistanceController(DistanceCalculatorService distanceCalculatorService, PostcodeValidator postcodeValidator) {
+        this.distanceCalculatorService = distanceCalculatorService;
         this.postcodeValidator = postcodeValidator;
     }
 
@@ -30,6 +33,6 @@ public class DistanceController {
         if (!postcodeValidator.isValid(postcode2)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "postcode2 is not a valid postcode: " + postcode2);
         }
-        return new Distance("33");
+        return distanceCalculatorService.distanceBetween(new Postcode(postcode1), new Postcode(postcode2));
     }
 }
