@@ -101,4 +101,13 @@ public class SampleData {
                 }
                 """;
     }
+
+    public static String postcodeInvalid() {
+        return """
+                {
+                "status": 404,
+                "error": "Postcode not found"
+                }
+                """;
+    }
 }

@@ -42,7 +42,7 @@ public class DistanceIntTest {
     }
 
     @Test
-    public void shouldPassIfStringMatches() {
+    public void successfullyReturnsDistance() {
 
         mockWebServer.enqueue(
                 new MockResponse().setResponseCode(200)
@@ -61,6 +61,23 @@ public class DistanceIntTest {
                 .expectBody(Distance.class).returnResult();
 
         assertEquals(BigDecimal.valueOf(5.37), body.getResponseBody().km());
+    }
+
+    @Test
+    public void returnsErrorWhenPostcodeInvalid() {
+
+        mockWebServer.enqueue(
+                new MockResponse().setResponseCode(404)
+                        .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .setBody(SampleData.postcodeInvalid())
+        );
+
+        var body = webClient.get().uri("/distance/calculator?postcode1=ME1 3TN&postcode2=W1A 1AA")
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(String.class).returnResult();
+
+        assertEquals("Unable to fetch ME1 3TN", body.getResponseBody());
     }
 
 }

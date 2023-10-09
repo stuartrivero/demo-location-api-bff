@@ -4,13 +4,15 @@ import com.example.demolocationapibff.domain.Distance;
 import com.example.demolocationapibff.domain.Postcode;
 import com.example.demolocationapibff.service.distance.DistanceCalculatorService;
 import com.example.demolocationapibff.service.distance.LatLongDistanceCalculator;
-import com.example.demolocationapibff.service.postcodes.PostcodesDTO;
+import com.example.demolocationapibff.service.postcodes.PostcodeException;
 import com.example.demolocationapibff.service.postcodes.PostcodesClient;
+import com.example.demolocationapibff.service.postcodes.PostcodesDTO;
 import com.example.demolocationapibff.service.postcodes.ResultDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.math.BigDecimal;
 
@@ -44,15 +46,14 @@ class DistanceCalculatorServiceTest {
     }
 
     @Test
-    void returnsADistanceFailsWhenPostcode1Unknown() {
+    void throwsAnExceptionWhenPostcodeNotFound() {
         Postcode postcode1 = new Postcode("ME1 4FL");
         Postcode postcode2 = new Postcode("GH1 1UL");
-        when(postcodesClient.getPostcodeInformation(postcode1.value())).thenReturn(new PostcodesDTO(404, null, "Invalid postcode"));
-        when(postcodesClient.getPostcodeInformation(postcode2.value())).thenReturn(new PostcodesDTO(200, new ResultDTO(3.0, 4.0), null));
+        when(postcodesClient.getPostcodeInformation(postcode1.value())).thenThrow(WebClientResponseException.create(404, "Invalid postcode", null, null, null));
 
         DistanceCalculatorService service = new DistanceCalculatorService(postcodesClient, latLongDistanceCalculator);
 
-        assertThrows(IllegalArgumentException.class, ()-> service.distanceBetween(postcode1, postcode2));
+        assertThrows(PostcodeException.class, ()-> service.distanceBetween(postcode1, postcode2));
 
         verifyNoInteractions(latLongDistanceCalculator);
     }
@@ -62,11 +63,11 @@ class DistanceCalculatorServiceTest {
         Postcode postcode1 = new Postcode("ME1 4FL");
         Postcode postcode2 = new Postcode("GH1 1UL");
         when(postcodesClient.getPostcodeInformation(postcode1.value())).thenReturn(new PostcodesDTO(200, new ResultDTO(1.0, 2.0), null));
-        when(postcodesClient.getPostcodeInformation(postcode2.value())).thenReturn(new PostcodesDTO(404, null,  "Invalid postcode"));
+        when(postcodesClient.getPostcodeInformation(postcode1.value())).thenThrow(WebClientResponseException.create(404, "Invalid postcode", null, null, null));
 
         DistanceCalculatorService service = new DistanceCalculatorService(postcodesClient, latLongDistanceCalculator);
 
-        assertThrows(IllegalArgumentException.class, ()-> service.distanceBetween(postcode1, postcode2));
+        assertThrows(PostcodeException.class, ()-> service.distanceBetween(postcode1, postcode2));
 
         verifyNoInteractions(latLongDistanceCalculator);
     }
