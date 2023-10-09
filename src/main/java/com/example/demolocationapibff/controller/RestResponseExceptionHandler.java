@@ -14,10 +14,7 @@ public class RestResponseExceptionHandler
         extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {PostcodeException.class})
-    protected ResponseEntity<Object> handleConflict(
-            RuntimeException ex, WebRequest request) {
-        String bodyOfResponse = ex.getMessage();
-        return handleExceptionInternal(ex, bodyOfResponse,
-                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
+        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 }

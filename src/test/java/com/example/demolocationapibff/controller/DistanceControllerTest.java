@@ -42,7 +42,7 @@ class DistanceControllerTest {
     }
 
     @Test
-    public void canAdd() throws Exception {
+    public void canCalculateTheDistance() throws Exception {
         when(service.distanceBetween(new Postcode("ME1 3TN"), new Postcode("W1A 1AA"))).thenReturn(new Distance(BigDecimal.valueOf(101)));
         this.mockMvc.perform(get("/distance/calculator?postcode1=ME1 3TN&postcode2=W1A 1AA"))
                 .andExpect(status().isOk())

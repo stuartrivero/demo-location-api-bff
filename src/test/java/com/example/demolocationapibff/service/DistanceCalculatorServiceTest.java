@@ -59,7 +59,7 @@ class DistanceCalculatorServiceTest {
     }
 
     @Test
-    void returnsADistanceFailsWhenPostcode2Unknown() {
+    void throwsAnExceptionWhenPostcode2Unknown() {
         Postcode postcode1 = new Postcode("ME1 4FL");
         Postcode postcode2 = new Postcode("GH1 1UL");
         when(postcodesClient.getPostcodeInformation(postcode1.value())).thenReturn(new PostcodesDTO(200, new ResultDTO(1.0, 2.0), null));

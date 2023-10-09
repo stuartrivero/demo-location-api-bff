@@ -25,12 +25,12 @@ public class DistanceCalculatorService {
     }
 
     public Distance distanceBetween(Postcode postcode1, Postcode postcode2) {
-        PostcodesDTO postcodeInformation = getPostcodeInformation(postcode1);
+        PostcodesDTO postcodeInformation1 = getPostcodeInformation(postcode1);
         PostcodesDTO postcodeInformation2 = getPostcodeInformation(postcode2);
 
         BigDecimal distanceInKm = latLongDistanceCalculator.differenceInKm(
-                postcodeInformation.result().latitude(),
-                postcodeInformation.result().longitude(),
+                postcodeInformation1.result().latitude(),
+                postcodeInformation1.result().longitude(),
                 postcodeInformation2.result().latitude(),
                 postcodeInformation2.result().longitude()
         );
