@@ -4,7 +4,7 @@ package com.example.demolocationapibff.controller;
 import com.example.demolocationapibff.domain.Distance;
 import com.example.demolocationapibff.domain.Postcode;
 import com.example.demolocationapibff.domain.PostcodeValidator;
-import com.example.demolocationapibff.service.DistanceCalculatorService;
+import com.example.demolocationapibff.service.distance.DistanceCalculatorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

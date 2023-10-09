@@ -1,4 +1,4 @@
-package com.example.demolocationapibff.service;
+package com.example.demolocationapibff.service.distance;
 
 import java.math.BigDecimal;
 

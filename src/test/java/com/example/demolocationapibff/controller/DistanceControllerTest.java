@@ -3,7 +3,7 @@ package com.example.demolocationapibff.controller;
 import com.example.demolocationapibff.domain.Distance;
 import com.example.demolocationapibff.domain.Postcode;
 import com.example.demolocationapibff.domain.PostcodeValidator;
-import com.example.demolocationapibff.service.DistanceCalculatorService;
+import com.example.demolocationapibff.service.distance.DistanceCalculatorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

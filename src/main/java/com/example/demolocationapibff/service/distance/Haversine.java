@@ -1,4 +1,4 @@
-package com.example.demolocationapibff.service;
+package com.example.demolocationapibff.service.distance;
 
 import org.springframework.stereotype.Component;
 

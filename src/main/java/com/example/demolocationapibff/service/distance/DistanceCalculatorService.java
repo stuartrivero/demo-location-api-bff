@@ -1,4 +1,4 @@
-package com.example.demolocationapibff.service;
+package com.example.demolocationapibff.service.distance;
 
 import com.example.demolocationapibff.domain.Distance;
 import com.example.demolocationapibff.domain.Postcode;
