@@ -7,9 +7,9 @@ import java.math.BigDecimal;
 @Component
 public class Haversine implements LatLongDistanceCalculator {
 
-     @Override
-     public BigDecimal differenceInKm(double lat1, double lon1,
-                                      double lat2, double lon2) {
+    @Override
+    public BigDecimal differenceInKm(double lat1, double lon1,
+                                     double lat2, double lon2) {
         // distance between latitudes and longitudes
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);
@@ -25,8 +25,8 @@ public class Haversine implements LatLongDistanceCalculator {
                         Math.cos(lat2);
         double rad = 6371;
         double c = 2 * Math.asin(Math.sqrt(a));
-         double result = rad * c;
-         return BigDecimal.valueOf(result);
+        double result = rad * c;
+        return BigDecimal.valueOf(result);
     }
 
 }

@@ -19,7 +19,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
+    testImplementation("com.squareup.okhttp3:mockwebserver")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
