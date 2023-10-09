@@ -11,6 +11,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -43,11 +45,11 @@ class DistanceControllerTest {
 
     @Test
     public void canAdd() throws Exception {
-        when(service.distanceBetween(new Postcode("ME1 3TN"), new Postcode("W1A 1AA"))).thenReturn(new Distance("101"));
+        when(service.distanceBetween(new Postcode("ME1 3TN"), new Postcode("W1A 1AA"))).thenReturn(new Distance(BigDecimal.valueOf(101)));
         this.mockMvc.perform(get("/distance/calculator?postcode1=ME1 3TN&postcode2=W1A 1AA"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("""
-                        {"km":"101"}\
+                        {"km":101.00}\
                         """))
         ;
     }
