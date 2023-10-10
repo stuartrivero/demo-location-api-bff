@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 
@@ -33,8 +34,8 @@ class DistanceCalculatorServiceTest {
 
     @Test
     void returnsADistance() {
-        when(postcodesClient.getPostcodeInformation(POSTCODE_1.value())).thenReturn(new PostcodesDTO(200, new ResultDTO(1.0, 2.0), null));
-        when(postcodesClient.getPostcodeInformation(POSTCODE_2.value())).thenReturn(new PostcodesDTO(200, new ResultDTO(3.0, 4.0), null));
+        when(postcodesClient.getPostcodeInformation(POSTCODE_1.value())).thenReturn(Mono.just(new PostcodesDTO(200, new ResultDTO(1.0, 2.0), null)));
+        when(postcodesClient.getPostcodeInformation(POSTCODE_2.value())).thenReturn(Mono.just(new PostcodesDTO(200, new ResultDTO(3.0, 4.0), null)));
 
         when(latLongDistanceCalculator.differenceInKm(1.0, 2.0, 3.0, 4.0)).thenReturn(BigDecimal.valueOf(33));
 
@@ -46,10 +47,10 @@ class DistanceCalculatorServiceTest {
     }
 
     @Test
-    void throwsAnExceptionWhenPostcodeNotFound() {
+    void throwsAnExceptionWhenPostcode1NotFound() {
         Postcode postcode1 = new Postcode("ME1 4FL");
         Postcode postcode2 = new Postcode("GH1 1UL");
-        when(postcodesClient.getPostcodeInformation(postcode1.value())).thenThrow(WebClientResponseException.create(404, "Invalid postcode", null, null, null));
+        when(postcodesClient.getPostcodeInformation(postcode1.value())).thenReturn(Mono.error(WebClientResponseException.create(404, "Invalid postcode", null, null, null)));
 
         DistanceCalculatorService service = new DistanceCalculatorService(postcodesClient, latLongDistanceCalculator);
 
@@ -62,8 +63,8 @@ class DistanceCalculatorServiceTest {
     void throwsAnExceptionWhenPostcode2Unknown() {
         Postcode postcode1 = new Postcode("ME1 4FL");
         Postcode postcode2 = new Postcode("GH1 1UL");
-        when(postcodesClient.getPostcodeInformation(postcode1.value())).thenReturn(new PostcodesDTO(200, new ResultDTO(1.0, 2.0), null));
-        when(postcodesClient.getPostcodeInformation(postcode1.value())).thenThrow(WebClientResponseException.create(404, "Invalid postcode", null, null, null));
+        when(postcodesClient.getPostcodeInformation(postcode1.value())).thenReturn(Mono.just(new PostcodesDTO(200, new ResultDTO(1.0, 2.0), null)));
+        when(postcodesClient.getPostcodeInformation(postcode1.value())).thenReturn(Mono.error(WebClientResponseException.create(404, "Invalid postcode", null, null, null)));
 
         DistanceCalculatorService service = new DistanceCalculatorService(postcodesClient, latLongDistanceCalculator);
 

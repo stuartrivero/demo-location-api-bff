@@ -12,6 +12,8 @@ will return
 }
 ```
 
+Webflux is used to make the calls to the postcodes api concurrent.
+
 ## Running the app locally
 
 ```
@@ -20,8 +22,8 @@ will return
 
 ## Still to do:
 
-* Make calls concurrent to get the postcode information
 * Write the correct validation for postcode format
 * Move the validation for postcode into a spring validator
 * Move sample data into files
 * Cache requests to provide state management example 
+* Make api request timeout configurable
