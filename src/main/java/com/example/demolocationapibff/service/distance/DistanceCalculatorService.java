@@ -25,6 +25,7 @@ public class DistanceCalculatorService {
     }
 
     public Distance distanceBetween(Postcode postcode1, Postcode postcode2) {
+        //TODO These could be concurrent
         PostcodesDTO postcodeInformation1 = getPostcodeInformation(postcode1);
         PostcodesDTO postcodeInformation2 = getPostcodeInformation(postcode2);
 
