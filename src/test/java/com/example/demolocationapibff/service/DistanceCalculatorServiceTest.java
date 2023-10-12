@@ -2,6 +2,7 @@ package com.example.demolocationapibff.service;
 
 import com.example.demolocationapibff.domain.Distance;
 import com.example.demolocationapibff.domain.Postcode;
+import com.example.demolocationapibff.domain.PostcodeSearch;
 import com.example.demolocationapibff.service.database.PostcodeSearchRepository;
 import com.example.demolocationapibff.service.distance.DistanceCalculatorService;
 import com.example.demolocationapibff.service.distance.LatLongDistanceCalculator;
@@ -42,13 +43,16 @@ class DistanceCalculatorServiceTest {
         when(postcodesClient.getPostcodeInformation(POSTCODE_1.value())).thenReturn(Mono.just(new PostcodesDTO(200, new ResultDTO(1.0, 2.0), null)));
         when(postcodesClient.getPostcodeInformation(POSTCODE_2.value())).thenReturn(Mono.just(new PostcodesDTO(200, new ResultDTO(3.0, 4.0), null)));
 
-        when(latLongDistanceCalculator.differenceInKm(1.0, 2.0, 3.0, 4.0)).thenReturn(BigDecimal.valueOf(33));
+        BigDecimal distance = BigDecimal.valueOf(33);
+        when(latLongDistanceCalculator.differenceInKm(1.0, 2.0, 3.0, 4.0)).thenReturn(distance);
 
         DistanceCalculatorService service = new DistanceCalculatorService(postcodesClient, latLongDistanceCalculator, new PostcodesConfiguration(), postcodeSearchRepository);
 
-        assertEquals(new Distance(BigDecimal.valueOf(33)), service.distanceBetween(POSTCODE_1, POSTCODE_2));
+        assertEquals(new Distance(distance), service.distanceBetween(POSTCODE_1, POSTCODE_2));
 
         verify(latLongDistanceCalculator).differenceInKm(1.0, 2.0, 3.0, 4.0);
+
+        verify(postcodeSearchRepository).save(any(PostcodeSearch.class));
     }
 
     @Test
@@ -61,7 +65,7 @@ class DistanceCalculatorServiceTest {
 
         assertThrows(PostcodeException.class, ()-> service.distanceBetween(postcode1, postcode2));
 
-        verifyNoInteractions(latLongDistanceCalculator);
+        verifyNoInteractions(latLongDistanceCalculator, postcodeSearchRepository);
     }
 
     @Test
@@ -75,6 +79,6 @@ class DistanceCalculatorServiceTest {
 
         assertThrows(PostcodeException.class, ()-> service.distanceBetween(postcode1, postcode2));
 
-        verifyNoInteractions(latLongDistanceCalculator);
+        verifyNoInteractions(latLongDistanceCalculator, postcodeSearchRepository);
     }
 }
