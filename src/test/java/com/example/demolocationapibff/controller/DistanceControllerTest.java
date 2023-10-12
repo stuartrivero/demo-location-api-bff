@@ -37,7 +37,7 @@ class DistanceControllerTest {
 
     @Test
     public void badRequestWhenSecondIsNotAPostcode() throws Exception {
-        this.mockMvc.perform(get("/distance/calculator?postcode1=ME1 3TN&postcode2=W1A1AA"))
+        this.mockMvc.perform(get("/distance/calculator?postcode1=ME1 3TN&postcode2=W1A 1A"))
                 .andExpect(status().isBadRequest());
     }
 

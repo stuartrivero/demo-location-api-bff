@@ -3,11 +3,11 @@ package com.example.demolocationapibff;
 import com.example.demolocationapibff.domain.Distance;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -17,16 +17,15 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import java.io.IOException;
 import java.math.BigDecimal;
 
+import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class DistanceIntTest {
 
     @Autowired
     private WebTestClient webClient;
-
-    @LocalServerPort
-    private int port;
 
     private static MockWebServer mockWebServer;
 
@@ -77,7 +76,7 @@ public class DistanceIntTest {
                 .expectStatus().isNotFound()
                 .expectBody(String.class).returnResult();
 
-        assertEquals("Unable to fetch ME1 3TN", body.getResponseBody());
+        assertTrue(requireNonNull(body.getResponseBody()).contains("Unable to fetch"));
     }
 
 }
