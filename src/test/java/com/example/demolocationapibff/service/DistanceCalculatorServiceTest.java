@@ -2,6 +2,7 @@ package com.example.demolocationapibff.service;
 
 import com.example.demolocationapibff.domain.Distance;
 import com.example.demolocationapibff.domain.Postcode;
+import com.example.demolocationapibff.service.database.PostcodeSearchRepository;
 import com.example.demolocationapibff.service.distance.DistanceCalculatorService;
 import com.example.demolocationapibff.service.distance.LatLongDistanceCalculator;
 import com.example.demolocationapibff.service.postcodes.PostcodeException;
@@ -31,6 +32,9 @@ class DistanceCalculatorServiceTest {
     PostcodesClient postcodesClient;
 
     @Mock
+    PostcodeSearchRepository postcodeSearchRepository;
+
+    @Mock
     LatLongDistanceCalculator latLongDistanceCalculator;
 
     @Test
@@ -40,7 +44,7 @@ class DistanceCalculatorServiceTest {
 
         when(latLongDistanceCalculator.differenceInKm(1.0, 2.0, 3.0, 4.0)).thenReturn(BigDecimal.valueOf(33));
 
-        DistanceCalculatorService service = new DistanceCalculatorService(postcodesClient, latLongDistanceCalculator, new PostcodesConfiguration());
+        DistanceCalculatorService service = new DistanceCalculatorService(postcodesClient, latLongDistanceCalculator, new PostcodesConfiguration(), postcodeSearchRepository);
 
         assertEquals(new Distance(BigDecimal.valueOf(33)), service.distanceBetween(POSTCODE_1, POSTCODE_2));
 
@@ -53,7 +57,7 @@ class DistanceCalculatorServiceTest {
         Postcode postcode2 = new Postcode("GH1 1UL");
         when(postcodesClient.getPostcodeInformation(postcode1.value())).thenReturn(Mono.error(WebClientResponseException.create(404, "Invalid postcode", null, null, null)));
 
-        DistanceCalculatorService service = new DistanceCalculatorService(postcodesClient, latLongDistanceCalculator, new PostcodesConfiguration());
+        DistanceCalculatorService service = new DistanceCalculatorService(postcodesClient, latLongDistanceCalculator, new PostcodesConfiguration(), postcodeSearchRepository);
 
         assertThrows(PostcodeException.class, ()-> service.distanceBetween(postcode1, postcode2));
 
@@ -67,7 +71,7 @@ class DistanceCalculatorServiceTest {
         when(postcodesClient.getPostcodeInformation(postcode1.value())).thenReturn(Mono.just(new PostcodesDTO(200, new ResultDTO(1.0, 2.0), null)));
         when(postcodesClient.getPostcodeInformation(postcode1.value())).thenReturn(Mono.error(WebClientResponseException.create(404, "Invalid postcode", null, null, null)));
 
-        DistanceCalculatorService service = new DistanceCalculatorService(postcodesClient, latLongDistanceCalculator, new PostcodesConfiguration());
+        DistanceCalculatorService service = new DistanceCalculatorService(postcodesClient, latLongDistanceCalculator, new PostcodesConfiguration(), postcodeSearchRepository);
 
         assertThrows(PostcodeException.class, ()-> service.distanceBetween(postcode1, postcode2));
 

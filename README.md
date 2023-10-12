@@ -12,6 +12,9 @@ will return
 }
 ```
 
+The history of searches is stored in a DB and can be retrieved via
+http://localhost:8080/distance/history
+
 Webflux is used to make the calls to the postcodes api concurrent.
 
 ## Running the app locally
@@ -19,7 +22,3 @@ Webflux is used to make the calls to the postcodes api concurrent.
 ```
  ./gradlew bootRun
 ```
-
-## Still to do:
-
-* Cache requests to provide state management example 
