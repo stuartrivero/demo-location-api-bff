@@ -6,6 +6,7 @@ import com.example.demolocationapibff.service.distance.DistanceCalculatorService
 import com.example.demolocationapibff.service.distance.LatLongDistanceCalculator;
 import com.example.demolocationapibff.service.postcodes.PostcodeException;
 import com.example.demolocationapibff.service.postcodes.PostcodesClient;
+import com.example.demolocationapibff.service.postcodes.PostcodesConfiguration;
 import com.example.demolocationapibff.service.postcodes.PostcodesDTO;
 import com.example.demolocationapibff.service.postcodes.ResultDTO;
 import org.junit.jupiter.api.Test;
@@ -39,7 +40,7 @@ class DistanceCalculatorServiceTest {
 
         when(latLongDistanceCalculator.differenceInKm(1.0, 2.0, 3.0, 4.0)).thenReturn(BigDecimal.valueOf(33));
 
-        DistanceCalculatorService service = new DistanceCalculatorService(postcodesClient, latLongDistanceCalculator);
+        DistanceCalculatorService service = new DistanceCalculatorService(postcodesClient, latLongDistanceCalculator, new PostcodesConfiguration());
 
         assertEquals(new Distance(BigDecimal.valueOf(33)), service.distanceBetween(POSTCODE_1, POSTCODE_2));
 
@@ -52,7 +53,7 @@ class DistanceCalculatorServiceTest {
         Postcode postcode2 = new Postcode("GH1 1UL");
         when(postcodesClient.getPostcodeInformation(postcode1.value())).thenReturn(Mono.error(WebClientResponseException.create(404, "Invalid postcode", null, null, null)));
 
-        DistanceCalculatorService service = new DistanceCalculatorService(postcodesClient, latLongDistanceCalculator);
+        DistanceCalculatorService service = new DistanceCalculatorService(postcodesClient, latLongDistanceCalculator, new PostcodesConfiguration());
 
         assertThrows(PostcodeException.class, ()-> service.distanceBetween(postcode1, postcode2));
 
@@ -66,7 +67,7 @@ class DistanceCalculatorServiceTest {
         when(postcodesClient.getPostcodeInformation(postcode1.value())).thenReturn(Mono.just(new PostcodesDTO(200, new ResultDTO(1.0, 2.0), null)));
         when(postcodesClient.getPostcodeInformation(postcode1.value())).thenReturn(Mono.error(WebClientResponseException.create(404, "Invalid postcode", null, null, null)));
 
-        DistanceCalculatorService service = new DistanceCalculatorService(postcodesClient, latLongDistanceCalculator);
+        DistanceCalculatorService service = new DistanceCalculatorService(postcodesClient, latLongDistanceCalculator, new PostcodesConfiguration());
 
         assertThrows(PostcodeException.class, ()-> service.distanceBetween(postcode1, postcode2));
 

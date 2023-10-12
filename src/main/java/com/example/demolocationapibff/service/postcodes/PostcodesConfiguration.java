@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class PostcodesConfiguration {
 
     private String baseUrl;
+    private int timeoutMs;
 
     public String getBaseUrl() {
         return baseUrl;
@@ -15,6 +16,14 @@ public class PostcodesConfiguration {
 
     public void setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
+    }
+
+    public int getTimeoutMs() {
+        return timeoutMs;
+    }
+
+    public void setTimeoutMs(int timeoutMs) {
+        this.timeoutMs = timeoutMs;
     }
 
 }

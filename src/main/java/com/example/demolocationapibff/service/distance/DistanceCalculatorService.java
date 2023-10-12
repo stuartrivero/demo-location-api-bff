@@ -4,6 +4,7 @@ import com.example.demolocationapibff.domain.Distance;
 import com.example.demolocationapibff.domain.Postcode;
 import com.example.demolocationapibff.service.postcodes.PostcodeException;
 import com.example.demolocationapibff.service.postcodes.PostcodesClient;
+import com.example.demolocationapibff.service.postcodes.PostcodesConfiguration;
 import com.example.demolocationapibff.service.postcodes.PostcodesDTO;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -17,21 +18,22 @@ import static java.lang.String.format;
 
 @Service
 public class DistanceCalculatorService {
-
-    public static final Duration TIMEOUT = Duration.ofSeconds(10);  //TODO make configurable
     private final PostcodesClient postcodesClient;
-
     private final LatLongDistanceCalculator latLongDistanceCalculator;
+    private final Duration timeout;
 
-    public DistanceCalculatorService(PostcodesClient postcodesClient, LatLongDistanceCalculator latLongDistanceCalculator) {
+    public DistanceCalculatorService(PostcodesClient postcodesClient,
+                                     LatLongDistanceCalculator latLongDistanceCalculator,
+                                     PostcodesConfiguration configuration) {
         this.postcodesClient = postcodesClient;
         this.latLongDistanceCalculator = latLongDistanceCalculator;
+        this.timeout = Duration.ofMillis(configuration.getTimeoutMs());
     }
 
     public Distance distanceBetween(Postcode postcode1, Postcode postcode2) {
         Flux<PostcodesDTO> flux = Flux.fromIterable(List.of(postcode1, postcode2)).
                 flatMapSequential(this::getPostcodeInformation);
-        List<PostcodesDTO> postcodesDTOS = flux.collectList().block(TIMEOUT);
+        List<PostcodesDTO> postcodesDTOS = flux.collectList().block(timeout);
         PostcodesDTO postcodeInformation1 = postcodesDTOS.get(0);
         PostcodesDTO postcodeInformation2 = postcodesDTOS.get(1);
 
