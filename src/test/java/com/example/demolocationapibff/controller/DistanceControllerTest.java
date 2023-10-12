@@ -4,6 +4,7 @@ import com.example.demolocationapibff.domain.Distance;
 import com.example.demolocationapibff.domain.Postcode;
 import com.example.demolocationapibff.domain.PostcodeValidator;
 import com.example.demolocationapibff.service.distance.DistanceCalculatorService;
+import com.example.demolocationapibff.service.postcodes.PostcodesConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -19,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(DistanceController.class)
-@Import({PostcodeValidator.class})
+@Import({PostcodeValidator.class, PostcodesConfiguration.class})
 class DistanceControllerTest {
 
     @MockBean

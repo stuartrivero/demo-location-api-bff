@@ -22,5 +22,4 @@ Webflux is used to make the calls to the postcodes api concurrent.
 
 ## Still to do:
 
-* Move the validation for postcode into a spring validator
 * Cache requests to provide state management example 
